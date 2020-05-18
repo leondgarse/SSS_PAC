@@ -589,6 +589,7 @@ var domains = {
   "qi-gong.me": 1,
   "qiwen.lu": 1,
   "qusi8.net": 1,
+  "quora.com": 1,
   "qvodzy.org": 1,
   "qxbbs.org": 1,
   "rangzen.org": 1,
