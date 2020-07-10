@@ -49,8 +49,9 @@ if [ $UPDATE_PROXY_FILE = true ]; then
 fi
 
 echo ">>>> Start test..."
-touch /tmp/shadowsocks.pid
-pkill -KILL -f sslocal
+sudo pkill -KILL -f sslocal
+PID_FILE=/$HOME/shadowsocks.pid
+LOG_FILE=/$HOME/shadowsocks.log
 
 IFS_BAK="$IFS"
 IFS=$'\n'
@@ -70,7 +71,7 @@ for (( i=0 ; $i<${#lines[@]} ; i=$i+4 )); do
     method=${lines[$i+3]}
 
     echo "address=$address; port=$port; password=$password; method=$method; local_port=$LOCAL_PORT"
-    sslocal -d start --pid-file /tmp/shadowsocks.pid --log-file /tmp/shadowsocks.log -s $address -p $port -m $method -k "$password" -l $LOCAL_PORT -b $BIND_ADDR -t 600
+    sslocal -d start --pid-file $PID_FILE --log-file $LOG_FILE -s $address -p $port -m $method -k "$password" -l $LOCAL_PORT -b $BIND_ADDR -t 600
 
     if [[ $? = 0 ]]; then
         sleep 1
@@ -87,13 +88,15 @@ for (( i=0 ; $i<${#lines[@]} ; i=$i+4 )); do
         fi
 
         echo $RESULT
-        sslocal -d stop --pid-file /tmp/shadowsocks.pid -s $address
+        sslocal -d stop --pid-file $PID_FILE -s $address
         # pkill -KILL -f sslocal
     fi
     sleep 1
     echo '>>>>'
     echo ""
 done
+
+rm $PID_FILE $LOG_FILE
 
 if [ $RESULT -ne 0 ]; then
     echo "None works, refresh $INPUT_FILE from $SHADOW_PROXY_SERVER by $0 -u"

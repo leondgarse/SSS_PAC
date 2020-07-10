@@ -345,6 +345,7 @@ var domains = {
   "googlesile.com": 1,
   "googlesource.com": 1,
   "googlesyndication.com": 1,
+  "googleusercontent.com": 1,
   "googlevideo.com": 1,
   "gpass1.com": 1,
   "grandtrial.org": 1,
