@@ -89,6 +89,7 @@ var domains = {
   "bowenpress.com": 1,
   "boxun.com": 1,
   "boxun.tv": 1,
+  "bp.blogspot.com": 1,
   "breakingtweets.com": 1,
   "breakwall.net": 1,
   "brightkite.com": 1,
