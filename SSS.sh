@@ -96,6 +96,10 @@ for (( i=0 ; $i<${#lines[@]} ; i=$i+4 )); do
     echo ""
 done
 
+if [ -n "$(which privoxy)" ]; then
+	sudo service privoxy restart
+fi
+
 rm $PID_FILE $LOG_FILE
 
 if [ $RESULT -ne 0 ]; then
