@@ -1,9 +1,8 @@
 #!/bin/bash
 
 PAC_FILE="blacklist.pac"
-REFINE_PAC_FILE="refine_${PAC_FILE}"
-RESULT_CSV="${PAC_FILE}.csv"
-DOMAIN_TEMP="${PAC_FILE}.temp"
+REFINE_PAC_FILE=""
+RESULT_CSV=""
 TIME_OUT=2
 PROXYCHAINS_VERIFY=false
 
@@ -30,13 +29,22 @@ while getopts s:d:r:t:Xh option; do
         r)
             RESULT_CSV=$OPTARG;;
         t)
-            TIME_OUT=true;;
+            TIME_OUT=$OPTARG;;
 		X)
 			PROXYCHAINS_VERIFY=true;;
         h)
             usage;;
     esac
 done
+
+if [[ -z $REFINE_PAC_FILE ]]; then
+	REFINE_PAC_FILE="refine_${PAC_FILE}"
+fi
+if [[ -z $RESULT_CSV ]]; then
+	RESULT_CSV="${PAC_FILE}.csv"
+fi
+DOMAIN_TEMP="${PAC_FILE}.temp"
+echo "REFINE_PAC_FILE=$REFINE_PAC_FILE, RESULT_CSV=$RESULT_CSV, DOMAIN_TEMP=$DOMAIN_TEMP"
 
 DOMAIN_HEAD=$(( $(grep -nm 1 'var domains = {' $PAC_FILE | cut -d':' -f1) + 1 ))
 DOMAIN_END=$(( $(sed -n "$(($DOMAIN_HEAD)),\$p" $PAC_FILE | grep -nm1 "};" | cut -d':' -f1) + $DOMAIN_HEAD - 2 ))
