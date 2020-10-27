@@ -2,7 +2,8 @@
 
 INPUT_FILE=$(dirname $0)"/SSS.tsv"
 UPDATE_PROXY_FILE=false
-SHADOW_PROXY_SERVER="https://free-ss.site / https://free-ss.best / https://lightyearvpn.com/free-vpn"
+# "https://free-ss.site / https://free-ss.best / https://lightyearvpn.com/free-vpn"
+SHADOW_PROXY_SERVER="https://lightyearvpn.com/free-vpn"
 BIND_ADDR="0.0.0.0"
 LOCAL_PORT=8080
 
@@ -53,7 +54,7 @@ PID_FILE=/$HOME/shadowsocks.pid
 LOG_FILE=/$HOME/shadowsocks.log
 
 echo ">>>> Header info:"
-HEAD=( $(head -n 1 SSS.tsv) )
+HEAD=( $(head -n 1 $INPUT_FILE) )
 typeset -l LOWERCASE_HEAD
 for (( i=0; $i<${#HEAD[@]}; i=$i+1 )); do
 	LOWERCASE_HEAD=${HEAD[$i]}
