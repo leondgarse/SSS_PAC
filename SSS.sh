@@ -2,7 +2,7 @@
 
 INPUT_FILE=$(dirname $0)"/SSS.tsv"
 UPDATE_PROXY_FILE=false
-SHADOW_PROXY_SERVER="https://free-ss.site"
+SHADOW_PROXY_SERVER="https://free-ss.site / https://free-ss.best / https://lightyearvpn.com/free-vpn"
 BIND_ADDR="0.0.0.0"
 LOCAL_PORT=8080
 
@@ -48,20 +48,37 @@ if [ $UPDATE_PROXY_FILE = true ]; then
     $(dirname $0)/get_shadow_sockets.py -u $SHADOW_PROXY_SERVER > $INPUT_FILE
 fi
 
-echo ">>>> Start test..."
 sudo pkill -KILL -f sslocal
 PID_FILE=/$HOME/shadowsocks.pid
 LOG_FILE=/$HOME/shadowsocks.log
 
+echo ">>>> Header info:"
+HEAD=( $(head -n 1 SSS.tsv) )
+typeset -l LOWERCASE_HEAD
+for (( i=0; $i<${#HEAD[@]}; i=$i+1 )); do
+	LOWERCASE_HEAD=${HEAD[$i]}
+	echo "$i, ${HEAD[$i]}, $LOWERCASE_HEAD"
+	
+	case "$LOWERCASE_HEAD" in
+		"ip")
+			IP_INDEX=$(( i + 1 ));;
+		"address")
+			IP_INDEX=$(( i + 1 ));;
+		"port")
+			PORT_INDEX=$(( i + 1 ));;
+		"password")
+			PASSWORD_INDEX=$(( i + 1 ));;
+		"method")
+			METHOD_INDEX=$(( i + 1 ));;
+	esac
+done
+echo "IP_INDEX=$IP_INDEX, PORT_INDEX=$PORT_INDEX, PASSWORD_INDEX=$PASSWORD_INDEX, METHOD_INDEX=$METHOD_INDEX"
+echo ""
+
+echo ">>>> Start test..."
 IFS_BAK="$IFS"
 IFS=$'\n'
-if [[ $(awk -F '\t' 'NR==1 {print $4}' $INPUT_FILE) = "Password" ]]; then
-    echo "password first."
-    lines=( $(awk -F '\t' 'NR > 1 {if (NF>4 && $1 ~/^[0-9]/) print $2"\n"$3"\n"$4"\n"$5}' $INPUT_FILE) )
-else
-    echo "method first."
-    lines=( $(awk -F '\t' 'NR > 1 {if (NF>4 && $1 ~/^[0-9]/) print $2"\n"$3"\n"$5"\n"$4}' $INPUT_FILE) )
-fi
+lines=( $(awk -F '\t' 'NR > 1 {if (NF>3 && $1 !~/^#/) print $'$IP_INDEX'"\n"$'$PORT_INDEX'"\n"$'$PASSWORD_INDEX'"\n"$'$METHOD_INDEX'}' $INPUT_FILE) )
 IFS="$IFS_BAK"
 
 for (( i=0 ; $i<${#lines[@]} ; i=$i+4 )); do
@@ -100,7 +117,7 @@ if [ -n "$(which privoxy)" ]; then
 	sudo service privoxy restart
 fi
 
-rm $PID_FILE $LOG_FILE
+rm -f $PID_FILE $LOG_FILE
 
 if [ $RESULT -ne 0 ]; then
     echo "None works, refresh $INPUT_FILE from $SHADOW_PROXY_SERVER by $0 -u"
