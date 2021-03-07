@@ -2,7 +2,8 @@
 
 INPUT_FILE=$(dirname $0)"/SSS.tsv"
 UPDATE_PROXY_FILE=false
-SHADOW_PROXY_SERVER="https://free-ss.site / https://free-ss.best / https://lightyearvpn.com/free-vpn"
+# "https://free-ss.site / https://free-ss.best / https://lightyearvpn.com/free-vpn"
+SHADOW_PROXY_SERVER="https://lightyearvpn.com/free-vpn"
 BIND_ADDR="0.0.0.0"
 LOCAL_PORT=8080
 
@@ -45,7 +46,9 @@ fi
 
 if [ $UPDATE_PROXY_FILE = true ]; then
     echo "Update proxy file From: $SHADOW_PROXY_SERVER, To: $INPUT_FILE"
-    $(dirname $0)/get_shadow_sockets.py -u $SHADOW_PROXY_SERVER > $INPUT_FILE
+    # $(dirname $0)/get_shadow_sockets.py -u $SHADOW_PROXY_SERVER > $INPUT_FILE
+    $(dirname $0)/get_shadow_sockets.py -o $INPUT_FILE
+    if [[ $? != 0 ]]; then exit $?; fi
 fi
 
 sudo pkill -KILL -f sslocal
@@ -53,7 +56,7 @@ PID_FILE=/$HOME/shadowsocks.pid
 LOG_FILE=/$HOME/shadowsocks.log
 
 echo ">>>> Header info:"
-HEAD=( $(head -n 1 SSS.tsv) )
+HEAD=( $(head -n 1 $INPUT_FILE) )
 typeset -l LOWERCASE_HEAD
 for (( i=0; $i<${#HEAD[@]}; i=$i+1 )); do
 	LOWERCASE_HEAD=${HEAD[$i]}
@@ -87,15 +90,19 @@ for (( i=0 ; $i<${#lines[@]} ; i=$i+4 )); do
     password=${lines[$i+2]}
     method=${lines[$i+3]}
 
-    echo "address=$address; port=$port; password=$password; method=$method; local_port=$LOCAL_PORT"
+    echo "$(( $i / 4 + 1 )): address=$address; port=$port; password=$password; method=$method; local_port=$LOCAL_PORT"
     sslocal -d start --pid-file $PID_FILE --log-file $LOG_FILE -s $address -p $port -m $method -k "$password" -l $LOCAL_PORT -b $BIND_ADDR -t 600
 
     if [[ $? = 0 ]]; then
         sleep 1
         # proxychains curl --connect-timeout 1 "www.google.com"
         # echo -e "GET http://google.com HTTP/1.0\n\n" | proxychains nc -w 2 -vz google.com 80
-        proxychains nc -w 2 -vz google.com 80
+        timeout 2s bash -c "proxychains nc -vz google.com 80"
         RESULT=$?
+
+		sed --follow-symlinks -i '1,/^[^#]/s/^[^#].*/# &/' $INPUT_FILE  # Add `#` to current tested line no matter of the result
+		sed --follow-symlinks -i '1s/^# \(.*\)/\1/' $INPUT_FILE	# Remove the `#` added on the head line...
+
         if [ $RESULT == 0 ]; then
             echo ""
             ps aux | grep sslocal | grep -v grep
@@ -106,6 +113,7 @@ for (( i=0 ; $i<${#lines[@]} ; i=$i+4 )); do
 
         echo $RESULT
         sslocal -d stop --pid-file $PID_FILE -s $address
+
         # pkill -KILL -f sslocal
     fi
     sleep 1
@@ -113,7 +121,7 @@ for (( i=0 ; $i<${#lines[@]} ; i=$i+4 )); do
     echo ""
 done
 
-if [ -n "$(which privoxy)" ]; then
+if [[ $RESULT == 0 && -n "$(which privoxy)" ]]; then
 	sudo service privoxy restart
 fi
 
