@@ -2,8 +2,8 @@
 
 INPUT_FILE=$(dirname $0)"/SSS.tsv"
 UPDATE_PROXY_FILE=false
-# "https://free-ss.site / https://free-ss.best / https://lightyearvpn.com/free-vpn"
-SHADOW_PROXY_SERVER="https://lightyearvpn.com/free-vpn"
+# "https://free-ss.site / https://lightyearvpn.com/free-vpn / https://sspool.nl/clash/proxies"
+SHADOW_PROXY_SERVER="https://sspool.nl/clash/proxies"
 BIND_ADDR="0.0.0.0"
 LOCAL_PORT=8080
 
@@ -100,9 +100,6 @@ for (( i=0 ; $i<${#lines[@]} ; i=$i+4 )); do
         timeout 2s bash -c "proxychains nc -vz google.com 80"
         RESULT=$?
 
-		sed --follow-symlinks -i '1,/^[^#]/s/^[^#].*/# &/' $INPUT_FILE  # Add `#` to current tested line no matter of the result
-		sed --follow-symlinks -i '1s/^# \(.*\)/\1/' $INPUT_FILE	# Remove the `#` added on the head line...
-
         if [ $RESULT == 0 ]; then
             echo ""
             ps aux | grep sslocal | grep -v grep
@@ -113,6 +110,9 @@ for (( i=0 ; $i<${#lines[@]} ; i=$i+4 )); do
 
         echo $RESULT
         sslocal -d stop --pid-file $PID_FILE -s $address
+
+		sed --follow-symlinks -i '1,/^[^#]/s/^[^#].*/# &/' $INPUT_FILE  # Add `#` to current tested line if failed
+		sed --follow-symlinks -i '1s/^# \(.*\)/\1/' $INPUT_FILE	# Remove the `#` added on the head line...
 
         # pkill -KILL -f sslocal
     fi

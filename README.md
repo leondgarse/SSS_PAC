@@ -3,8 +3,7 @@ Shadow Socks Server PAC for my own usage
 ***
 
 ### PAC source
-- `whitelist.pac` clone from [Github MatcherAny/whitelist.pac](https://github.com/MatcherAny/whitelist.pac.git)
-- `blacklist.pac` clone from [Github Alvin9999/new-pac](https://github.com/Alvin9999/new-pac.git)
+- `blacklist.pac` cloned from [Github Alvin9999/new-pac](https://github.com/Alvin9999/new-pac.git)
 ### 配置
 - [Ubuntu Shadow socket 代理配置](https://github.com/leondgarse/Atom_notebook/blob/master/public/2013_Basic/05-12_Ubuntu_Usage.md#shadow-socket-%E4%BB%A3%E7%90%86)
 ### 脚本说明
@@ -21,6 +20,5 @@ Shadow Socks Server PAC for my own usage
 - **Soft links**
   ```sh
   ln -s $HOME/workspace/SSS_PAC/SSS.sh $HOME/local_bin/SSS.sh
-  sudo ln -s $HOME/workspace/SSS_PAC/whitelist.pac /var/www/html/whitelist.pac
-  sudo ln -s $HOME/workspace/SSS_PAC/refine_blacklist.pac /var/www/html/blacklist.pac
+  sudo ln -s $HOME/workspace/SSS_PAC/blacklist.pac /var/www/html/blacklist.pac
   ```

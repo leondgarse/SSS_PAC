@@ -1,5 +1,6 @@
 var direct = 'DIRECT';
-var proxy = "SOCKS5 192.168.11.83:8080;";
+var proxy = "SOCKS5 127.0.0.1:8080;";
+// var proxy = "SOCKS5 192.168.11.83:8080;";
 
 var domains = {
   "10musume.com": 1,
