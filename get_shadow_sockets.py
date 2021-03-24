@@ -93,13 +93,15 @@ def get_ssr_from_sspool_clash(output=None, url_name="sspool"):
 if __name__ == "__main__":
     import argparse
     import sys
+    import os
 
     ss_servers = "bitefu, sspool, proxypool"
+    file_dir = os.path.dirname(os.path.abspath(__file__))
 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-u", "--url", type=str, help="Shadow sockes server: " + ss_servers, default="sspool")
     parser.add_argument("-t", "--wait_time", type=int, default=20, help="Wait time before expire")
-    parser.add_argument("-o", "--output", type=str, default="SSS.tsv", help="Output file path")
+    parser.add_argument("-o", "--output", type=str, default=os.path.join(file_dir, "SSS.tsv"), help="Output file path")
     args = parser.parse_args(sys.argv[1:])
 
     if "bitefu" in args.url:

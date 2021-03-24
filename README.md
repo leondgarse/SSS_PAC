@@ -17,8 +17,18 @@ Shadow Socks Server PAC for my own usage
   V/T/U/M	Address	Port	Password	Method			
   10↑/10↑/10↑/10↑	111.111.111.111	10101	paqssword	aes-256-gcm	09:17:04	US
   ```
+  ```sh
+  address port    password        method  speed_MB        country
+  138.199.40.169  35294   J9Y2ncrdPEC38gwydNFFGBna        aes-256-gcm     348.52  🏁 ZZ
+  ```
 - **Soft links**
   ```sh
-  ln -s $HOME/workspace/SSS_PAC/SSS.sh $HOME/local_bin/SSS.sh
+  ln -s $HOME/workspace/SSS_PAC/SSS.sh $HOME/local_bin/
+  ln -s $HOME/workspace/SSS_PAC/get_shadow_sockets.py $HOME/local_bin/
   sudo ln -s $HOME/workspace/SSS_PAC/blacklist.pac /var/www/html/blacklist.pac
+  ```
+- **Crontab**
+  ```sh
+  crontab -e
+  # */10 * * * * timeout 2s bash -c "proxychains nc -vz google.com 80" || ( echo ">>>> [Restart] date: $(date)" >> ~/SSS_contab.log && PATH=/opt/anaconda3/bin:$HOME/local_bin:$PATH PYTHONPATH=/opt/anaconda3/lib:$PYTHONPATH SSS.sh >> ~/SSS_contab.log 2>&1 )
   ```
