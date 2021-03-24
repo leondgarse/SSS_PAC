@@ -19,7 +19,7 @@ Shadow Socks Server PAC for my own usage
   ```
   ```sh
   address port    password        method  speed_MB        country
-  138.199.40.169  35294   J9Y2ncrdPEC38gwydNFFGBna        aes-256-gcm     348.52  🏁 ZZ
+  111.111.111.111  10101   paqssword        aes-256-gcm     348.52  🏁 ZZ
   ```
 - **Soft links**
   ```sh
