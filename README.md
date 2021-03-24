@@ -15,11 +15,11 @@ Shadow Socks Server PAC for my own usage
 - [SSS.sh](SSS.sh) 测试 `SSS.tsv` 文件中的代理地址，寻找第一个可用的，`SSS.tsv` 使用 `tab` 分割
   ```sh
   V/T/U/M	Address	Port	Password	Method			
-  10↑/10↑/10↑/10↑	111.111.111.111	10101	paqssword	aes-256-gcm	09:17:04	US
+  10↑/10↑/10↑/10↑	111.111.111.111	10101	password	aes-256-gcm	09:17:04	US
   ```
   ```sh
   address port    password        method  speed_MB        country
-  111.111.111.111  10101   paqssword        aes-256-gcm     348.52  🏁 ZZ
+  111.111.111.111  10101   password        aes-256-gcm     348.52  🏁 ZZ
   ```
 - **Soft links**
   ```sh
