@@ -33,7 +33,17 @@ function run_test {
 		if [[ $? != 0 ]]; then exit $?; fi
 	fi
 
-	sudo pkill -KILL -f sslocal
+	# Check if sslocal is running
+	ps aux | grep -v grep | grep sslocal > /dev/null
+	if [ $? -eq 0 ]; then
+		# Check if sslocal is running by current user, or use sudo to stop it
+		ps -f -u $(whoami) | grep -v grep | grep sslocal > /dev/null
+		if [ $? -eq 0 ]; then
+			pkill -KILL -f sslocal
+		else
+			sudo pkill -KILL -f sslocal
+		fi
+	fi
 	PID_FILE=/$HOME/shadowsocks.pid
 	LOG_FILE=/$HOME/shadowsocks.log
 
@@ -106,7 +116,10 @@ function run_test {
 	done
 
 	if [[ $RESULT == 0 && -n "$(which privoxy)" ]]; then
-		sudo service privoxy restart
+		service privoxy status > /dev/null
+		if [ $? -ne 0 ]; then
+			sudo service privoxy restart
+		fi
 	fi
 
 	rm -f $PID_FILE $LOG_FILE
