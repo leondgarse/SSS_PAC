@@ -72,7 +72,7 @@ def get_ssr_from_bitefu(output=None):
     return dd
 
 
-def get_ssr_from_sspool_clash(output=None, url_name="sspool"):
+def get_ssr_from_sspool_clash(output=None, url_name="sspool", head=-1):
     import pandas as pd
     import json
 
@@ -83,6 +83,8 @@ def get_ssr_from_sspool_clash(output=None, url_name="sspool"):
     dd["speed_MB"] = dd.name.map(lambda ii: float(ii.split("|")[1][:-2]))
     dd["address"], dd["method"] = dd["server"], dd["cipher"]
     ee = dd[["address", "port", "password", "method", "speed_MB", "country"]].sort_values("speed_MB", ascending=False)
+    if head > 0:
+        ee = ee.head(head)
 
     if output:
         sep = "\t" if output.endswith(".tsv") else ","
@@ -100,14 +102,15 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-u", "--url", type=str, help="Shadow sockes server: " + ss_servers, default="sspool")
-    parser.add_argument("-t", "--wait_time", type=int, default=20, help="Wait time before expire")
-    parser.add_argument("-o", "--output", type=str, default=os.path.join(file_dir, "SSS.tsv"), help="Output file path")
+    parser.add_argument("-t", "--wait_time", type=int, default=20, help="Wait time before expire.")
+    parser.add_argument("-o", "--output", type=str, default=os.path.join(file_dir, "SSS.tsv"), help="Output file path.")
+    parser.add_argument("-H", "--head", type=int, default=-1, help="Save only the top [NUM] address.")
     args = parser.parse_args(sys.argv[1:])
 
     if "bitefu" in args.url:
         get_ssr_from_bitefu(args.output)
-    if "sspool" in args.url or "proxypool" in args.url:
-        get_ssr_from_sspool_clash(args.output, url_name=args.url)
+    elif "sspool" in args.url or "proxypool" in args.url:
+        get_ssr_from_sspool_clash(args.output, url_name=args.url, head=args.head)
     else:
         proxy_body = get_proxy_from_server_by_webdriver(args.url, wait_time=args.wait_time)
         print(proxy_body)

@@ -30,5 +30,5 @@ Shadow Socks Server PAC for my own usage
 - **Crontab**
   ```sh
   crontab -e
-  # */10 6-23 * * * timeout 2s bash -c "proxychains nc -vz google.com 80" > /dev/null 2>&1 || ( echo ">>>> [Restart] date: $(date)" >> ~/SSS_contab.log && PATH=/opt/anaconda3/bin:$HOME/local_bin:$PATH PYTHONPATH=/opt/anaconda3/lib:$PYTHONPATH SSS.sh >> ~/SSS_contab.log 2>&1 )
+  # */10 6-23 * * * proxychains nc -vz google.com 80 > /dev/null 2>&1 || ( echo "\n>>>> [Restart] date: $(date)" >> $HOME/local_bin/SSS_contab.log && PATH=/opt/anaconda3/bin:$HOME/local_bin:$PATH PYTHONPATH=/opt/anaconda3/lib:$PYTHONPATH SSS.sh >> $HOME/local_bin/SSS_contab.log 2>&1 )
   ```

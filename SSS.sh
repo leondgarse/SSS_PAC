@@ -2,12 +2,15 @@
 
 INPUT_FILE=$(dirname $0)"/SSS.tsv"
 UPDATE_PROXY_FILE=false
-# "https://free-ss.site / https://lightyearvpn.com/free-vpn / https://sspool.nl/clash/proxies"
-SHADOW_PROXY_SERVER="https://sspool.nl/clash/proxies"
 BIND_ADDR="0.0.0.0"
 LOCAL_PORT=8080
+# "https://free-ss.site / https://lightyearvpn.com/free-vpn / https://sspool.nl/clash/proxies"
+SHADOW_PROXY_SERVER="https://sspool.nl/clash/proxies"
 
 function usage {
+	SUPPORTED_URL=$($(dirname $0)/get_shadow_sockets.py -h | grep "url" | awk -F ': ' '{print $2}')
+	# SUPPORTED_URL_LIST=( ${SUPPORTED_URL//,/} )
+
     printf "
 Usage: $0 [-h] [-b BIND_ADDR] [-p PORT] [-s input_file] [-S url] [-u]
 
@@ -15,7 +18,7 @@ Usage: $0 [-h] [-b BIND_ADDR] [-p PORT] [-s input_file] [-S url] [-u]
     -b BIND_ADDR, Local bind server address, default: $BIND_ADDR.
     -p PORT, Local bind port, default: $LOCAL_PORT.
     -s INPUT_FILE, Local file used for detecying, default: $INPUT_FILE.
-    -S URL, Shadow sockets server url, default: $SHADOW_PROXY_SERVER.
+    -S URL, Shadow sockets server url, [$SUPPORTED_URL], default: $SHADOW_PROXY_SERVER.
     -u, Update local saved file from server, default: $UPDATE_PROXY_FILE.
 "
     exit 0
@@ -29,7 +32,7 @@ function run_test {
 	if [ $UPDATE_PROXY_FILE = true ]; then
 		echo "Update proxy file From: $SHADOW_PROXY_SERVER, To: $INPUT_FILE"
 		# $(dirname $0)/get_shadow_sockets.py -u $SHADOW_PROXY_SERVER > $INPUT_FILE
-		$(dirname $0)/get_shadow_sockets.py -o $INPUT_FILE
+		$(dirname $0)/get_shadow_sockets.py -o $INPUT_FILE -H 50 -u $SHADOW_PROXY_SERVER
 		if [[ $? != 0 ]]; then exit $?; fi
 	fi
 
@@ -78,6 +81,7 @@ function run_test {
 	lines=( $(awk -F '\t' 'NR > 1 {if (NF>3 && $1 !~/^#/) print $'$IP_INDEX'"\n"$'$PORT_INDEX'"\n"$'$PASSWORD_INDEX'"\n"$'$METHOD_INDEX'}' $INPUT_FILE) )
 	IFS="$IFS_BAK"
 
+	RESULT=1
 	for (( i=0 ; $i<${#lines[@]} ; i=$i+4 )); do
 		address=${lines[$i+0]}
 		port=${lines[$i+1]}
