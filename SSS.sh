@@ -8,7 +8,7 @@ LOCAL_PORT=8080
 SHADOW_PROXY_SERVER="https://sspool.nl/clash/proxies"
 
 function usage {
-	SUPPORTED_URL=$($(dirname $0)/get_shadow_sockets.py -h | grep "url" | awk -F ': ' '{print $2}')
+	SUPPORTED_URL=$(echo `$(dirname $0)/get_shadow_sockets.py -h | grep "url" -A1` | awk -F 'server: ' '{print $2}' | awk -F ' \\(' '{print $1}')
 	# SUPPORTED_URL_LIST=( ${SUPPORTED_URL//,/} )
 
     printf "
@@ -18,8 +18,8 @@ Usage: $0 [-h] [-b BIND_ADDR] [-p PORT] [-s input_file] [-S url] [-u]
     -b BIND_ADDR, Local bind server address, default: $BIND_ADDR.
     -p PORT, Local bind port, default: $LOCAL_PORT.
     -s INPUT_FILE, Local file used for detecying, default: $INPUT_FILE.
-    -S URL, Shadow sockets server url, [$SUPPORTED_URL], default: $SHADOW_PROXY_SERVER.
-    -u, Update local saved file from server, default: $UPDATE_PROXY_FILE.
+    -u URL, Shadow sockets server url, [$SUPPORTED_URL], default: $SHADOW_PROXY_SERVER.
+    -U, Update local saved file from server, default: $UPDATE_PROXY_FILE.
 "
     exit 0
 }
@@ -32,7 +32,8 @@ function run_test {
 	if [ $UPDATE_PROXY_FILE = true ]; then
 		echo "Update proxy file From: $SHADOW_PROXY_SERVER, To: $INPUT_FILE"
 		# $(dirname $0)/get_shadow_sockets.py -u $SHADOW_PROXY_SERVER > $INPUT_FILE
-		$(dirname $0)/get_shadow_sockets.py -o $INPUT_FILE -H 50 -u $SHADOW_PROXY_SERVER
+		# $(dirname $0)/get_shadow_sockets.py -o $INPUT_FILE -H 50 -u $SHADOW_PROXY_SERVER
+		$(dirname $0)/get_shadow_sockets.py -o $INPUT_FILE -u $SHADOW_PROXY_SERVER
 		if [[ $? != 0 ]]; then exit $?; fi
 	fi
 
@@ -129,7 +130,7 @@ function run_test {
 	rm -f $PID_FILE $LOG_FILE
 }
 
-while getopts b:s:S:uh option; do
+while getopts b:s:u:Uh option; do
     case "$option" in
         b)
             BIND_ADDR=$OPTARG;;
@@ -137,9 +138,9 @@ while getopts b:s:S:uh option; do
             LOCAL_PORT=$OPTARG;;
         s)
             INPUT_FILE=$OPTARG;;
-        S)
-            SHADOW_PROXY_SERVER=$OPTARG;;
         u)
+            SHADOW_PROXY_SERVER=$OPTARG;;
+        U)
             UPDATE_PROXY_FILE=true;;
         h)
             usage;;

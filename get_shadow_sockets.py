@@ -72,20 +72,36 @@ def get_ssr_from_bitefu(output=None):
     return dd
 
 
-def get_ssr_from_sspool_clash(output=None, url_name="sspool", head=-1):
+def get_ssr_from_sspool_clash(output=None, url="sspool", head=-1, sort_speed=True):
     import pandas as pd
     import json
 
-    url = "https://sspool.nl/clash/proxies" if url_name == "sspool" else "https://proxypool.ednovas.xyz/clash/proxies"
+    url_dict = {
+        "sspool": "https://sspool.nl/clash/proxies",
+        "proxypool": "https://proxypool.ednovas.xyz/clash/proxies",
+        "stgod": "https://hello.stgod.com/clash/proxies",
+        "purel": "https://proxy.purel.in/clash/proxies",
+        "6166888": "https://6166888.xyz/clash/proxies",
+    }
+
+    if not url.startswith("http"):
+        url = url_dict.get(url, "https://sspool.nl/clash/proxies")
+
     ret = requests.get(url)
     bb = [json.loads(ii[2:]) for ii in ret.text.strip().split("\n")[1:]]
-    dd = pd.DataFrame([ii for ii in bb if ii["type"] == "ss" and "plugin" not in ii and "|" in ii["name"]])
-    dd["speed_MB"] = dd.name.map(lambda ii: float(ii.split("|")[1][:-2]))
-    dd["address"], dd["method"] = dd["server"], dd["cipher"]
-    ee = dd[["address", "port", "password", "method", "speed_MB", "country"]].sort_values("speed_MB", ascending=False)
+    if sort_speed:
+        dd = pd.DataFrame([ii for ii in bb if ii["type"] == "ss" and "plugin" not in ii and "|" in ii["name"]])
+        dd["speed_MB"] = dd.name.map(lambda ii: float(ii.split("|")[1][:-2]))
+        dd["address"], dd["method"] = dd["server"], dd["cipher"]
+        ee = dd[["address", "port", "password", "method", "speed_MB", "country"]]
+        ee = ee.sort_values("speed_MB", ascending=False)
+    else:
+        dd = pd.DataFrame([ii for ii in bb if ii["type"] == "ss" and "plugin" not in ii])
+        dd["address"], dd["method"] = dd["server"], dd["cipher"]
+        ee = dd[["address", "port", "password", "method", "country"]]
+
     if head > 0:
         ee = ee.head(head)
-
     if output:
         sep = "\t" if output.endswith(".tsv") else ","
         ee.to_csv(output, sep=sep, index=False)
@@ -97,7 +113,10 @@ if __name__ == "__main__":
     import sys
     import os
 
-    ss_servers = "bitefu, sspool, proxypool"
+    ss_servers_speed = ["sspool", "proxypool"]
+    ss_servers_no_speed = ["bitefu", "stgod", "purel", "6166888"]
+    ss_servers = ", ".join(ss_servers_speed + ss_servers_no_speed)
+
     file_dir = os.path.dirname(os.path.abspath(__file__))
 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -105,12 +124,14 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--wait_time", type=int, default=20, help="Wait time before expire.")
     parser.add_argument("-o", "--output", type=str, default=os.path.join(file_dir, "SSS.tsv"), help="Output file path.")
     parser.add_argument("-H", "--head", type=int, default=-1, help="Save only the top [NUM] address.")
+    parser.add_argument("-S", "--no_sort_speed", action="store_true", help="Disable sort by speed.")
     args = parser.parse_args(sys.argv[1:])
+    args.sort_speed = not args.no_sort_speed if args.url in ss_servers_speed else False
 
     if "bitefu" in args.url:
         get_ssr_from_bitefu(args.output)
-    elif "sspool" in args.url or "proxypool" in args.url:
-        get_ssr_from_sspool_clash(args.output, url_name=args.url, head=args.head)
+    elif args.url in ss_servers_speed + ss_servers_no_speed:
+        get_ssr_from_sspool_clash(args.output, url=args.url, head=args.head, sort_speed=args.sort_speed)
     else:
         proxy_body = get_proxy_from_server_by_webdriver(args.url, wait_time=args.wait_time)
         print(proxy_body)
