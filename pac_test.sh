@@ -3,7 +3,7 @@
 PAC_FILE="blacklist.pac"
 REFINE_PAC_FILE=""
 RESULT_CSV=""
-TIME_OUT=2
+TIME_OUT=4
 PROXYCHAINS_VERIFY=false
 
 function usage {
@@ -58,12 +58,14 @@ head -n $(( $DOMAIN_HEAD - 1 )) $PAC_FILE > $REFINE_PAC_FILE
 while read line; do
 	DOMAIN_1=$(echo $line | cut -d':' -f1)
 	DOMAIN=${DOMAIN_1:1:-1}
-	echo ">>>> Testing: $DOMAIN"
-	nc -w $TIME_OUT -vz $DOMAIN 80
+	echo ">>>> Testing: $DOMAIN, timeout ${TIME_OUT}s"
+	# nc -w $TIME_OUT -vz $DOMAIN 80
+	timeout ${TIME_OUT}s bash -c "nc -vz $DOMAIN 80"
 	NORMAL_RESULT=$?
 
 	if [[ $NORMAL_RESULT -ne 0 && $PROXYCHAINS_VERIFY = true ]]; then
-		proxychains nc -w $TIME_OUT -vz $DOMAIN 80
+		# proxychains nc -w $TIME_OUT -vz $DOMAIN 80
+		timeout ${TIME_OUT}s bash -c "proxychains nc -vz $DOMAIN 80"
 		PROXY_RESULT=$?
 	else
 		PROXY_RESULT=0
