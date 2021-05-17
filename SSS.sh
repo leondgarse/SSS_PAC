@@ -5,7 +5,7 @@ UPDATE_PROXY_FILE=false
 BIND_ADDR="0.0.0.0"
 LOCAL_PORT=8080
 # "https://free-ss.site / https://lightyearvpn.com/free-vpn / https://sspool.nl/clash/proxies"
-SHADOW_PROXY_SERVER="https://sspool.nl/clash/proxies"
+SHADOW_PROXY_SERVER="sspool"
 
 function usage {
 	SUPPORTED_URL=$(echo `$(dirname $0)/get_shadow_sockets.py -h | grep "url" -A1` | awk -F 'server: ' '{print $2}' | awk -F ' \\(' '{print $1}')
