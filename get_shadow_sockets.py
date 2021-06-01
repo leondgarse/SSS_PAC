@@ -87,25 +87,22 @@ def get_ssr_from_sspool_clash(output=None, url="sspool", head=-1, sort_speed=Tru
     if not url.startswith("http"):
         url = url_dict.get(url, "https://sspool.nl/clash/proxies")
 
+    print("Target url:", url)
     ret = requests.get(url)
     bb = [json.loads(ii[2:]) for ii in ret.text.strip().split("\n")[1:]]
     if sort_speed:
-        dd = pd.DataFrame([ii for ii in bb if ii["type"] == "ss" and "plugin" not in ii and "|" in ii["name"]])
+        dd = pd.DataFrame([ii for ii in bb if ii["type"] == "ss" and "plugin" not in ii and "|" in ii["name"] and "ufunr" not in ii["server"]])
         dd["speed_MB"] = dd.name.map(lambda ii: float(ii.split("|")[1][:-2]))
-        dd["address"], dd["method"] = dd["server"], dd["cipher"]
-        ee = dd[["address", "port", "password", "method", "speed_MB", "country"]]
-        ee = ee.sort_values("speed_MB", ascending=False)
+        dd = dd.sort_values("speed_MB", ascending=False)
     else:
-        dd = pd.DataFrame([ii for ii in bb if ii["type"] == "ss" and "plugin" not in ii])
-        dd["address"], dd["method"] = dd["server"], dd["cipher"]
-        ee = dd[["address", "port", "password", "method", "country"]]
+        dd = pd.DataFrame([ii for ii in bb if ii["type"] == "ss" and "plugin" not in ii and "ufunr" not in ii["server"]])
 
     if head > 0:
-        ee = ee.head(head)
+        dd = dd.head(head)
     if output:
         sep = "\t" if output.endswith(".tsv") else ","
-        ee.to_csv(output, sep=sep, index=False)
-    return ee
+        dd.to_csv(output, sep=sep, index=False)
+    return dd
 
 
 if __name__ == "__main__":

@@ -65,11 +65,15 @@ function run_test {
 				IP_INDEX=$AWK_INDEX;;
 			"address")
 				IP_INDEX=$AWK_INDEX;;
+			"server")
+				IP_INDEX=$AWK_INDEX;;
 			"port")
 				PORT_INDEX=$AWK_INDEX;;
 			"password")
 				PASSWORD_INDEX=$AWK_INDEX;;
 			"method")
+				METHOD_INDEX=$AWK_INDEX;;
+			"cipher")
 				METHOD_INDEX=$AWK_INDEX;;
 		esac
 	done
