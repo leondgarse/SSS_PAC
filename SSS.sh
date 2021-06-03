@@ -7,10 +7,10 @@ LOCAL_PORT=8080
 # "https://free-ss.site / https://lightyearvpn.com/free-vpn / https://sspool.nl/clash/proxies"
 SHADOW_PROXY_SERVER="sspool"
 
-function usage {
-	SUPPORTED_URL=$(echo `$(dirname $0)/get_shadow_sockets.py -h | grep "url" -A1` | awk -F 'server: ' '{print $2}' | awk -F ' \\(' '{print $1}')
-	# SUPPORTED_URL_LIST=( ${SUPPORTED_URL//,/} )
+SUPPORTED_URL=$(echo `$(dirname $0)/get_shadow_sockets.py -h | grep "url" -A1` | awk -F 'server: ' '{print $2}' | awk -F ' \\(' '{print $1}')
+SUPPORTED_URL_LIST=( ${SUPPORTED_URL//,/} )
 
+function usage {
     printf "
 Usage: $0 [-h] [-b BIND_ADDR] [-p PORT] [-s input_file] [-S url] [-u]
 
@@ -132,6 +132,9 @@ function run_test {
 	fi
 
 	rm -f $PID_FILE $LOG_FILE
+	if [[ $RESULT == 0 ]]; then
+		exit 0
+	fi
 }
 
 while getopts b:s:u:Uh option; do
@@ -155,8 +158,15 @@ echo "BIND_ADDR = $BIND_ADDR, Server = $SHADOW_PROXY_SERVER, Input file = $INPUT
 
 run_test
 
-if [ $RESULT -ne 0 ]; then
+# Update from the defualt server first
+echo "None works, refresh $INPUT_FILE from $SHADOW_PROXY_SERVER"
+UPDATE_PROXY_FILE=true
+run_test
+
+# Update from all server
+for SHADOW_PROXY_SERVER in ${SUPPORTED_URL_LIST[@]}; do
     echo "None works, refresh $INPUT_FILE from $SHADOW_PROXY_SERVER"
-	UPDATE_PROXY_FILE=true
-	run_test
-fi
+    UPDATE_PROXY_FILE=true
+    run_test
+done
+    

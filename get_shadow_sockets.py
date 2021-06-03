@@ -111,7 +111,7 @@ if __name__ == "__main__":
     import os
 
     ss_servers_speed = ["sspool", "proxypool"]
-    ss_servers_no_speed = ["bitefu", "stgod", "purel", "6166888"]
+    ss_servers_no_speed = ["stgod", "bitefu", "purel", "6166888"]
     ss_servers = ", ".join(ss_servers_speed + ss_servers_no_speed)
 
     file_dir = os.path.dirname(os.path.abspath(__file__))
