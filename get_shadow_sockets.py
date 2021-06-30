@@ -7,7 +7,6 @@ URL_DICT = {
     "135": [10, "http://8.135.91.61/clash/proxies"],
     "136": [10, "http://8.136.5.236/clash/proxies"],
     "233660": [10, "https://233660.xyz/clash/proxies"],
-    "dswang": [10, "https://ss.dswang.ga:8443/clash/proxies"],
     "freeu": [10, "https://freeu.xyz/clash/proxies"],
     "getproxy": [100, "https://getproxy.olivers.works/clash/proxies"],
     "lonxin": [0, "https://fq.lonxin.net/clash/proxies"],
@@ -118,7 +117,7 @@ if __name__ == "__main__":
     import sys
     import os
 
-    ss_servers_speed = ["sspool", "233660", "proxypool"]
+    ss_servers_speed = ["sspool", "sspool.nl", "233660", "proxypool"]
     ss_servers_no_speed = list(set(URL_DICT.keys()) - set(ss_servers_speed))
     ss_servers_sorted = sorted(list(URL_DICT.keys()), key=lambda kk: URL_DICT[kk][0])
     ss_servers = ", ".join(ss_servers_sorted)
