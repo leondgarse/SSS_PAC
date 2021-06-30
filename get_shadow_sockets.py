@@ -8,6 +8,7 @@ URL_DICT = {
     "136": [10, "http://8.136.5.236/clash/proxies"],
     "233660": [10, "https://233660.xyz/clash/proxies"],
     "freeu": [10, "https://freeu.xyz/clash/proxies"],
+    "free886": [10, "https://free886.herokuapp.com/clash/proxies"],
     "getproxy": [100, "https://getproxy.olivers.works/clash/proxies"],
     "lonxin": [0, "https://fq.lonxin.net/clash/proxies"],
     "luoml": [10, "https://emby.luoml.eu.org/clash/proxies"],
