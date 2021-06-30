@@ -7,7 +7,7 @@ LOCAL_PORT=8080
 # "https://free-ss.site / https://lightyearvpn.com/free-vpn / https://sspool.nl/clash/proxies"
 SHADOW_PROXY_SERVER="sspool"
 
-SUPPORTED_URL=$(echo `$(dirname $0)/get_shadow_sockets.py -h | grep "url" -A1` | awk -F 'server: ' '{print $2}' | awk -F ' \\(' '{print $1}')
+SUPPORTED_URL=`$(dirname $0)/get_shadow_sockets.py -L`
 SUPPORTED_URL_LIST=( ${SUPPORTED_URL//,/} )
 
 function usage {
@@ -33,7 +33,7 @@ function run_test {
 		echo "Update proxy file From: $SHADOW_PROXY_SERVER, To: $INPUT_FILE"
 		# $(dirname $0)/get_shadow_sockets.py -u $SHADOW_PROXY_SERVER > $INPUT_FILE
 		# $(dirname $0)/get_shadow_sockets.py -o $INPUT_FILE -H 50 -u $SHADOW_PROXY_SERVER
-		$(dirname $0)/get_shadow_sockets.py -o $INPUT_FILE -u $SHADOW_PROXY_SERVER
+		$(dirname $0)/get_shadow_sockets.py -o $INPUT_FILE -u $SHADOW_PROXY_SERVER -H 100
 		if [[ $? != 0 ]]; then exit $?; fi
 	fi
 
@@ -59,7 +59,7 @@ function run_test {
 		LOWERCASE_HEAD=${HEAD[$i]}
 		AWK_INDEX=$(( i + 1 ))
 		echo "$AWK_INDEX: $LOWERCASE_HEAD"
-		
+
 		case "$LOWERCASE_HEAD" in
 			"ip")
 				IP_INDEX=$AWK_INDEX;;
@@ -169,4 +169,3 @@ for SHADOW_PROXY_SERVER in ${SUPPORTED_URL_LIST[@]}; do
     UPDATE_PROXY_FILE=true
     run_test
 done
-    

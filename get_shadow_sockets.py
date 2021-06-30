@@ -3,6 +3,22 @@
 import requests
 import re
 
+URL_DICT = {
+    "135": [10, "http://8.135.91.61/clash/proxies"],
+    "136": [10, "http://8.136.5.236/clash/proxies"],
+    "233660": [10, "https://233660.xyz/clash/proxies"],
+    "dswang": [10, "https://ss.dswang.ga:8443/clash/proxies"],
+    "freeu": [10, "https://freeu.xyz/clash/proxies"],
+    "getproxy": [100, "https://getproxy.olivers.works/clash/proxies"],
+    "lonxin": [0, "https://fq.lonxin.net/clash/proxies"],
+    "luoml": [10, "https://emby.luoml.eu.org/clash/proxies"],
+    "proxypool": [100, "https://proxypool.ednovas.xyz/clash/proxies"],
+    "proxypool.fly": [0, "https://proxypool.fly.dev/clash/proxies"],
+    "purel": [20, "https://proxy.purel.in/clash/proxies"],
+    "sspool": [0, "https://sspool.herokuapp.com/clash/proxies"],
+    "sspool.nl": [0, "https://sspool.nl/clash/proxies"],
+    "stgod": [0, "https://hello.stgod.com/clash/proxies?nc=CN"],
+}
 
 def parse_proxy_from_html(html):
     title_pattern = re.compile(
@@ -76,16 +92,8 @@ def get_ssr_from_sspool_clash(output=None, url="sspool", head=-1, sort_speed=Tru
     import pandas as pd
     import json
 
-    url_dict = {
-        "sspool": "https://sspool.nl/clash/proxies",
-        "proxypool": "https://proxypool.ednovas.xyz/clash/proxies",
-        "stgod": "https://hello.stgod.com/clash/proxies",
-        "purel": "https://proxy.purel.in/clash/proxies",
-        "6166888": "https://6166888.xyz/clash/proxies",
-    }
-
     if not url.startswith("http"):
-        url = url_dict.get(url, "https://sspool.nl/clash/proxies")
+        url = URL_DICT.get(url, [0, "https://sspool.nl/clash/proxies"])[1]
 
     print("Target url:", url)
     ret = requests.get(url)
@@ -110,22 +118,26 @@ if __name__ == "__main__":
     import sys
     import os
 
-    ss_servers_speed = ["sspool", "proxypool"]
-    ss_servers_no_speed = ["stgod", "bitefu", "purel", "6166888"]
-    ss_servers = ", ".join(ss_servers_speed + ss_servers_no_speed)
+    ss_servers_speed = ["sspool", "233660", "proxypool"]
+    ss_servers_no_speed = list(set(URL_DICT.keys()) - set(ss_servers_speed))
+    ss_servers_sorted = sorted(list(URL_DICT.keys()), key=lambda kk: URL_DICT[kk][0])
+    ss_servers = ", ".join(ss_servers_sorted)
 
     file_dir = os.path.dirname(os.path.abspath(__file__))
 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-u", "--url", type=str, help="Shadow sockes server: " + ss_servers, default="sspool")
+    parser.add_argument("-u", "--url", type=str, help="One of: " + ss_servers, default="sspool")
     parser.add_argument("-t", "--wait_time", type=int, default=20, help="Wait time before expire.")
     parser.add_argument("-o", "--output", type=str, default=os.path.join(file_dir, "SSS.tsv"), help="Output file path.")
     parser.add_argument("-H", "--head", type=int, default=-1, help="Save only the top [NUM] address.")
     parser.add_argument("-S", "--no_sort_speed", action="store_true", help="Disable sort by speed.")
+    parser.add_argument("-L", "--list_server", action="store_true", help="Print server list.")
     args = parser.parse_args(sys.argv[1:])
     args.sort_speed = not args.no_sort_speed if args.url in ss_servers_speed else False
 
-    if "bitefu" in args.url:
+    if args.list_server:
+        print(ss_servers)
+    elif "bitefu" in args.url:
         get_ssr_from_bitefu(args.output)
     elif args.url in ss_servers_speed + ss_servers_no_speed:
         get_ssr_from_sspool_clash(args.output, url=args.url, head=args.head, sort_speed=args.sort_speed)
