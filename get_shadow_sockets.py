@@ -10,13 +10,13 @@ URL_DICT = {
     "freeu": [10, "https://freeu.xyz/clash/proxies"],
     "free886": [10, "https://free886.herokuapp.com/clash/proxies"],
     "getproxy": [100, "https://getproxy.olivers.works/clash/proxies"],
-    "lonxin": [0, "https://fq.lonxin.net/clash/proxies"],
+    "lonxin": [0, "https://fq.lonxin.net/clash/proxies?nc=CN"],
     "luoml": [10, "https://emby.luoml.eu.org/clash/proxies"],
     "proxypool": [100, "https://proxypool.ednovas.xyz/clash/proxies"],
     "proxypool.fly": [0, "https://proxypool.fly.dev/clash/proxies"],
     "purel": [20, "https://proxy.purel.in/clash/proxies"],
-    "sspool": [0, "https://sspool.herokuapp.com/clash/proxies"],
-    "sspool.nl": [0, "https://sspool.nl/clash/proxies"],
+    "sspool": [0, "https://sspool.herokuapp.com/clash/proxies?nc=IN,CN"],
+    "sspool.nl": [0, "https://sspool.nl/clash/proxies?nc=IN,CN"],
     "stgod": [0, "https://hello.stgod.com/clash/proxies?nc=CN"],
 }
 
