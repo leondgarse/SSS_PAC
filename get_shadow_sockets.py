@@ -7,6 +7,7 @@ URL_DICT = {
     "135": [10, "http://8.135.91.61/clash/proxies"],
     "136": [10, "http://8.136.5.236/clash/proxies"],
     "233660": [10, "https://233660.xyz/clash/proxies"],
+    "ednovas": [100, "https://ednovas.design/clash/proxies?nc=CN"],
     "freeu": [10, "https://freeu.xyz/clash/proxies"],
     "free886": [10, "https://free886.herokuapp.com/clash/proxies"],
     "getproxy": [100, "https://getproxy.olivers.works/clash/proxies"],
@@ -17,7 +18,7 @@ URL_DICT = {
     "purel": [20, "https://proxy.purel.in/clash/proxies"],
     "sspool": [0, "https://sspool.herokuapp.com/clash/proxies?nc=IN,CN"],
     "sspool.nl": [0, "https://sspool.nl/clash/proxies?nc=IN,CN"],
-    "stgod": [0, "https://hello.stgod.com/clash/proxies?nc=CN"],
+    "stgod": [0, "https://hello.stgod.com/clash/proxies?nc=IN,CN"],
 }
 
 def parse_proxy_from_html(html):

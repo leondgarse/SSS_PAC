@@ -6,6 +6,8 @@ BIND_ADDR="0.0.0.0"
 LOCAL_PORT=8080
 # "https://free-ss.site / https://lightyearvpn.com/free-vpn / https://sspool.nl/clash/proxies"
 SHADOW_PROXY_SERVER="sspool"
+PID_FILE=/$HOME/shadowsocks.pid
+LOG_FILE=/$HOME/shadowsocks.log
 
 SUPPORTED_URL=`$(dirname $0)/get_shadow_sockets.py -L`
 SUPPORTED_URL_LIST=( ${SUPPORTED_URL//,/} )
@@ -48,8 +50,6 @@ function run_test {
 			sudo pkill -KILL -f sslocal
 		fi
 	fi
-	PID_FILE=/$HOME/shadowsocks.pid
-	LOG_FILE=/$HOME/shadowsocks.log
 
 	echo ">>>> Header info:"
 	HEAD=( $(head -n 1 $INPUT_FILE) )
@@ -155,6 +155,11 @@ while getopts b:s:u:Uh option; do
 done
 
 echo "BIND_ADDR = $BIND_ADDR, Server = $SHADOW_PROXY_SERVER, Input file = $INPUT_FILE, Update = $UPDATE_PROXY_FILE"
+
+if [[ -e $PID_FILE ]]; then
+	echo "Already running:" `ps aux | grep $(cat $PID_FILE) | grep -v grep`
+	exit 1
+fi
 
 run_test
 
