@@ -146,7 +146,8 @@ while getopts b:s:u:Uh option; do
         s)
             INPUT_FILE=$OPTARG;;
         u)
-            SHADOW_PROXY_SERVER=$OPTARG;;
+            SHADOW_PROXY_SERVER=$OPTARG
+            UPDATE_PROXY_FILE=true;;
         U)
             UPDATE_PROXY_FILE=true;;
         h)
