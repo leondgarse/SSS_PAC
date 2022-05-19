@@ -4,30 +4,37 @@ import requests
 import re
 
 URL_DICT = {
-    "128": [100, "http://104.128.81.6:8080/clash/proxies?nc=CN"],
-    "158": [100, "http://158.101.93.192/clash/proxies?nc=CN"],
-    "149": [100, "http://149.248.8.112/clash/proxies?nc=CN"],
+    # "128": [100, "http://104.128.81.6:8080/clash/proxies?nc=CN"],
+    # "158": [100, "http://158.101.93.192/clash/proxies?nc=CN"],
+    # "149": [100, "http://149.248.8.112/clash/proxies?nc=CN"],
     # "135": [0, "http://8.135.91.61/clash/proxies?nc=CN"],
     # "136": [10, "http://8.136.5.236/clash/proxies?nc=CN"],
     # "233660": [10, "https://233660.xyz/clash/proxies?nc=CN"],
-    # "3wking": [100, "http://clash.3wking.com:12580/clash/proxies?nc=CN"],
+    "3wking": [100, "http://clash.3wking.com:12580/clash/proxies?nc=CN"],
     # "45": [100, "http://45.88.12.120/clash/proxies"],
     # "998988": [100, "https://998988.xyz/clash/proxies?nc=CN"],
+    "cloudkingzst": [0, "https://proxy.cloudkingzst.xyz/clash/proxies?nc=CN"],
     "ednovas": [100, "https://ednovas.design/clash/proxies?nc=CN"],
+    "ednovas.design": [0, "https://ednovas.design/clash/proxies?nc=CN"],
     "ednovas.xyz": [0, "https://proxy.ednovas.xyz/clash/proxies?nc=CN"],
     # "freeu": [10, "https://freeu.xyz/clash/proxies?nc=CN"],
-    "free.zdl": [10, "https://free.zdl.im/clash/proxies?nc=CN"],
-    "free886": [0, "https://free886.herokuapp.com/clash/proxies?nc=CN"],
+    # "free.zdl": [10, "https://free.zdl.im/clash/proxies?nc=CN"],
+    # "free886": [0, "https://free886.herokuapp.com/clash/proxies?nc=CN"],
     # "getproxy": [100, "https://getproxy.olivers.works/clash/proxies?nc=CN"],
     "lonxin": [100, "https://fq.lonxin.net/clash/proxies?nc=CN"],
     # "luoml": [10, "https://emby.luoml.eu.org/clash/proxies?nc=CN"],
     "proxypoolss.fly": [0, "https://proxypoolss.fly.dev/clash/proxies?nc=CN"],
+    # "laowang": [0, "https://proxypool.laowang.me/clash/proxies?nc=CN"],
+    "laowang": [0, "https://proxypool.laowang.me/clash/proxies?nc=CN"],
     # "purel": [20, "https://proxy.purel.in/clash/proxies?nc=CN"],
     "sspool": [100, "https://sspool.herokuapp.com/clash/proxies?nc=IN,CN"],
+    "si4": [0, "https://ss.si4.cc/clash/proxies?nc=CN"],
     # "sspool.nl": [0, "https://sspool.nl/clash/proxies?nc=IN,CN"],
     # "stgod": [100, "https://hello.stgod.com/clash/proxies?nc=IN,CN"],
     "xhrzg2017": [0, "https://hk.xhrzg2017.xyz/clash/proxies?nc=CN"],
-    "zjzj": [0, "https://dl.zjzj.xyz/clash/proxies?nc=CN"],
+    "wxshi": [0, "http://wxshi.top:9090/clash/proxies?nc=CN"],
+    # "yugogo": [0, "https://proxy.yugogo.xyz/clash/proxies?nc=CN"],
+    # "zjzj": [0, "https://dl.zjzj.xyz/clash/proxies?nc=CN"],
     # "zxcyec": [0, "https://smart.zxcyec.top/clash/proxies?nc=CN"],
 }
 
@@ -129,7 +136,7 @@ if __name__ == "__main__":
     import sys
     import os
 
-    ss_servers_speed = ["ednovas", "sspool", "sspool.nl", "233660", "proxypool", "xhrzg2017", "zxcyec"]
+    ss_servers_speed = ["ednovas", "ednovas.design", "laowang", "sspool", "sspool.nl", "233660", "proxypool", "si4", "xhrzg2017", "zxcyec"]
     ss_servers_no_speed = list(set(URL_DICT.keys()) - set(ss_servers_speed))
     ss_servers_sorted = sorted(list(URL_DICT.keys()), key=lambda kk: URL_DICT[kk][0])
     ss_servers = ", ".join(ss_servers_sorted)

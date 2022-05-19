@@ -35,7 +35,8 @@ function run_test {
 		echo "Update proxy file From: $SHADOW_PROXY_SERVER, To: $INPUT_FILE"
 		# $(dirname $0)/get_shadow_sockets.py -u $SHADOW_PROXY_SERVER > $INPUT_FILE
 		# $(dirname $0)/get_shadow_sockets.py -o $INPUT_FILE -H 50 -u $SHADOW_PROXY_SERVER
-		$(dirname $0)/get_shadow_sockets.py -o $INPUT_FILE -u $SHADOW_PROXY_SERVER -H 100
+		# $(dirname $0)/get_shadow_sockets.py -o $INPUT_FILE -u $SHADOW_PROXY_SERVER -H 100
+		$(dirname $0)/get_shadow_sockets.py -o $INPUT_FILE -u $SHADOW_PROXY_SERVER
 		if [[ $? != 0 ]]; then exit $?; fi
 	fi
 
