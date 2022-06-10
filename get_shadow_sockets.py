@@ -21,12 +21,11 @@ URL_DICT = {
     "ednovas.xyz": [0, "https://proxy.ednovas.xyz/clash/proxies?nc=CN"],
     # "freeu": [10, "https://freeu.xyz/clash/proxies?nc=CN"],
     # "free.zdl": [10, "https://free.zdl.im/clash/proxies?nc=CN"],
-    # "free886": [0, "https://free886.herokuapp.com/clash/proxies?nc=CN"],
+    "free886": [0, "https://free886.herokuapp.com/clash/proxies?nc=CN"],
     # "getproxy": [100, "https://getproxy.olivers.works/clash/proxies?nc=CN"],
     "lonxin": [100, "https://fq.lonxin.net/clash/proxies?nc=CN"],
     # "luoml": [10, "https://emby.luoml.eu.org/clash/proxies?nc=CN"],
     "proxypoolss.fly": [0, "https://proxypoolss.fly.dev/clash/proxies?nc=CN"],
-    # "laowang": [0, "https://proxypool.laowang.me/clash/proxies?nc=CN"],
     "laowang": [0, "https://proxypool.laowang.me/clash/proxies?nc=CN"],
     # "purel": [20, "https://proxy.purel.in/clash/proxies?nc=CN"],
     "sspool": [100, "https://sspool.herokuapp.com/clash/proxies?nc=IN,CN"],
@@ -35,6 +34,7 @@ URL_DICT = {
     # "stgod": [100, "https://hello.stgod.com/clash/proxies?nc=IN,CN"],
     "xhrzg2017": [0, "https://hk.xhrzg2017.xyz/clash/proxies?nc=CN"],
     "wxshi": [0, "http://wxshi.top:9090/clash/proxies?nc=CN"],
+    "gtang8": [0, "https://suo.yt/ZxDz8mO"],
     # "yugogo": [0, "https://proxy.yugogo.xyz/clash/proxies?nc=CN"],
     # "zjzj": [0, "https://dl.zjzj.xyz/clash/proxies?nc=CN"],
     # "zxcyec": [0, "https://smart.zxcyec.top/clash/proxies?nc=CN"],
@@ -112,12 +112,17 @@ def get_ssr_from_sspool_clash(output=None, url="sspool", head=-1, sort_speed=Tru
     import pandas as pd
     import json
 
-    if not url.startswith("http"):
-        url = URL_DICT.get(url, [0, "https://sspool.nl/clash/proxies"])[1]
+    if url in URL_DICT:
+        url = URL_DICT[url][1]
 
     print("Target url:", url)
-    ret = requests.get(url)
-    bb = [json.loads(ii[2:]) for ii in ret.text.strip().split("\n")[1:]]
+    if url.startswith("http"):
+        ret = requests.get(url)
+        bb = [json.loads(ii[2:]) for ii in ret.text.strip().split("\n")[1:]]
+    else:
+        with open(url, 'r') as ff:
+            ret = ff.read()
+        bb = [json.loads(ii[2:]) for ii in ret.strip().split("\n")[1:]]
     if sort_speed:
         dd = pd.DataFrame([ii for ii in bb if ii["type"] == "ss" and "plugin" not in ii and "|" in ii["name"] and "ufunr" not in ii["server"]])
         dd["speed_MB"] = dd.name.map(lambda ii: float(ii.split("|")[1][:-2]))
@@ -159,8 +164,9 @@ if __name__ == "__main__":
         print(ss_servers)
     elif "bitefu" in args.url:
         get_ssr_from_bitefu(args.output)
-    elif args.url in ss_servers_speed + ss_servers_no_speed:
-        get_ssr_from_sspool_clash(args.output, url=args.url, head=args.head, sort_speed=args.sort_speed)
+    # elif args.url in ss_servers_speed + ss_servers_no_speed:
     else:
-        proxy_body = get_proxy_from_server_by_webdriver(args.url, wait_time=args.wait_time)
-        print(proxy_body)
+        get_ssr_from_sspool_clash(args.output, url=args.url, head=args.head, sort_speed=args.sort_speed)
+    # else:
+    #     proxy_body = get_proxy_from_server_by_webdriver(args.url, wait_time=args.wait_time)
+    #     print(proxy_body)

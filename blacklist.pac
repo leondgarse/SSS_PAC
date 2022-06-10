@@ -1,4 +1,5 @@
 var direct = 'DIRECT';
+// var proxy = "PROXY 127.0.0.1:12333;";
 var proxy = "SOCKS5 127.0.0.1:8080;";
 // var proxy = "SOCKS5 192.168.11.83:8080;";
 
@@ -276,7 +277,6 @@ var domains = {
   "githubassets.com": 1,
   "github-atom-io-herokuapp-com.freetls.fastly.net": 1,
   "github.blog": 1,
-  "github.com": 1,
   "github.dev": 1,
   "github1s.com": 1,
   "github-camo.com": 1,
@@ -397,6 +397,7 @@ var domains = {
   "junefourth-20.net": 1,
   "justfreevpn.com": 1,
   "justin.tv": 1,
+  "linkedin.com": 1,
   "kakao.com": 1,
   "kanzhongguo.com": 1,
   "kanzhongguo.eu": 1,
@@ -420,6 +421,7 @@ var domains = {
   "liaowangxizang.net": 1,
   "lightyearvpn.com": 1,
   "line.me": 1,
+  "linkedin.com": 1,
   "linkideo.com": 1,
   "linux-engineer.net": 1,
   "listorious.com": 1,
