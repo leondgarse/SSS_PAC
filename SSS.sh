@@ -158,10 +158,10 @@ done
 
 echo "BIND_ADDR = $BIND_ADDR, Server = $SHADOW_PROXY_SERVER, Input file = $INPUT_FILE, Update = $UPDATE_PROXY_FILE"
 
-if [[ -e $PID_FILE ]]; then
-	echo "Already running:" `ps aux | grep $(cat $PID_FILE) | grep -v grep`
-	exit 1
-fi
+# if [[ -e $PID_FILE ]]; then
+# 	echo "Already running:" `ps aux | grep $(cat $PID_FILE) | grep -v grep`
+# 	exit 1
+# fi
 
 run_test
 
