@@ -4,6 +4,7 @@ import requests
 import re
 
 URL_DICT = {
+    "141": [100, "http://39.106.12.141:8081/clash/proxies?nc=CN"],
     # "3wking": [100, "http://clash.3wking.com:12580/clash/proxies?nc=CN"],
     # "cloudkingzst": [0, "https://proxy.cloudkingzst.xyz/clash/proxies?nc=CN"],
     # "ednovas.xyz": [0, "https://proxy.ednovas.xyz/clash/proxies?nc=CN"],
