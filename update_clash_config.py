@@ -84,7 +84,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-u", "--update_yaml", type=str, help="source yaml path for update", default="clash.yaml")
     parser.add_argument("-s", "--save_yaml", type=str, help="target yaml path for saving.", default="config.yaml")
-    parser.add_argument("-e", "--empty_yaml", type=str, help="empty yaml path containing rules.", default=os.path.join(FILE_PATH, "empty.yaml"))
+    parser.add_argument("-e", "--template_yaml", type=str, help="template yaml path containing rules.", default=os.path.join(FILE_PATH, "template.yaml"))
 
     args = parser.parse_args(sys.argv[1:])
     update_proxies(update_yaml=args.update_yaml, save_yaml=args.save_yaml, basic_yaml=args.empty_yaml)
