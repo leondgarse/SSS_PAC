@@ -4,7 +4,7 @@ import os
 import yaml
 
 PROXY_GROUP_TOKENS = {
-    '🇭🇰 香港节点': "HK", '🇯🇵 日本节点': "JP", '🇺🇲 美国节点': "US", '🇨🇳 台湾节点': "CN", '🇸🇬 狮城节点': "SG",
+    '🇭🇰 香港节点': "HK", '🇯🇵 日本节点': "JP", '🇺🇲 美国节点': "US", '🇨🇳 台湾节点': "TW", '🇸🇬 狮城节点': "SG",
     '🇰🇷 韩国节点': "KR", '🌍 其他地区': "others", '♻️ 专线节点': "others", '♻️ 手动切换': "all", "♻️ 自动选择": "all",
 }
 ALL_TOKENS = [ii for ii in PROXY_GROUP_TOKENS.values() if ii not in ["all", "others", "none"]]
@@ -30,7 +30,7 @@ def update_proxies(update_yaml='clash.yaml', save_yaml="config.yaml", basic_yaml
     with open(update_yaml, encoding='utf-8') as ff:
         updates = yaml.safe_load(ff.read())
 
-    proxies = [ii for ii in updates['proxies'] if isinstance(ii['port'], int)]
+    proxies = [ii for ii in updates['proxies'] if isinstance(ii['port'], int) and "CN" not in ii["name"]]
     proxy_names = [ii['name'] for ii in proxies]
     basic["proxies"] = proxies
 
