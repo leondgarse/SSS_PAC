@@ -32,3 +32,13 @@ Shadow Socks Server PAC for my own usage
   crontab -e
   # */10 6-23 * * * proxychains nc -vz google.com 80 > /dev/null 2>&1 || ( echo "\n>>>> [Restart] date: $(date)" >> $HOME/local_bin/SSS_contab.log && PATH=/opt/anaconda3/bin:$HOME/local_bin:$PATH PYTHONPATH=/opt/anaconda3/lib:$PYTHONPATH SSS.sh >> $HOME/local_bin/SSS_contab.log 2>&1 )
   ```
+### Clash
+- [Github aiboboxx/clashfree](https://github.com/aiboboxx/clashfree)
+- [Github mfuu/v2ray](https://github.com/mfuu/v2ray)
+- **Update `empty.yaml` from other source proxies**
+  ```sh
+  git clone https://github.com/mfuu/v2ray.git
+  cd v2ray
+  update_clash_config.py -u clash.yaml
+  # >>>> Output: config.yaml
+  ```
