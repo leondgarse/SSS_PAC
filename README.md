@@ -35,10 +35,9 @@ Shadow Socks Server PAC for my own usage
 ### Clash
 - [Github aiboboxx/clashfree](https://github.com/aiboboxx/clashfree)
 - [Github mfuu/v2ray](https://github.com/mfuu/v2ray)
-- **Update `empty.yaml` from other source proxies**
+- **Update `template.yaml` from other source proxies**
   ```sh
   git clone https://github.com/mfuu/v2ray.git
-  cd v2ray
-  update_clash_config.py -u clash.yaml
+  python3 update_clash_config.py -u v2ray/clash.yaml
   # >>>> Output: config.yaml
   ```

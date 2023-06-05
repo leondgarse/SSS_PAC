@@ -87,4 +87,4 @@ if __name__ == "__main__":
     parser.add_argument("-e", "--template_yaml", type=str, help="template yaml path containing rules.", default=os.path.join(FILE_PATH, "template.yaml"))
 
     args = parser.parse_args(sys.argv[1:])
-    update_proxies(update_yaml=args.update_yaml, save_yaml=args.save_yaml, basic_yaml=args.empty_yaml)
+    update_proxies(update_yaml=args.update_yaml, save_yaml=args.save_yaml, basic_yaml=args.template_yaml)
