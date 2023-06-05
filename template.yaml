@@ -36,6 +36,7 @@ proxy-groups:
 - name: 🛑 全球拦截
   proxies:
   - REJECT
+  - DIRECT
   type: select
 - name: 🍃 应用净化
   proxies:

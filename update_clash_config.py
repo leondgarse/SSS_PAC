@@ -18,7 +18,7 @@ PROXY_GROUP_TOKENS = {
 ALL_TOKENS = [ii for ii in PROXY_GROUP_TOKENS.values() if ii not in ["all", "others", "none", "raw"]]
 
 
-def gen_empty(source_yaml="~/.config/clash/config.yaml", save_yaml="empty.yaml"):
+def gen_template(source_yaml="~/.config/clash/config.yaml", save_yaml="template.yaml"):
     with open(os.path.expanduser(source_yaml), encoding="utf-8") as ff:
         basic = yaml.safe_load(ff.read())
     proxies = [ii["name"] for ii in basic["proxies"]]
@@ -31,7 +31,7 @@ def gen_empty(source_yaml="~/.config/clash/config.yaml", save_yaml="empty.yaml")
     print(">>>> Output:", save_yaml)
 
 
-def update_proxies(update_yaml="clash.yaml", save_yaml="config.yaml", basic_yaml="empty.yaml"):
+def update_proxies(update_yaml="clash.yaml", save_yaml="config.yaml", basic_yaml="template.yaml"):
     with open(os.path.expanduser(basic_yaml), encoding="utf-8") as ff:
         basic = yaml.safe_load(ff.read())
 
@@ -61,7 +61,7 @@ def update_proxies(update_yaml="clash.yaml", save_yaml="config.yaml", basic_yaml
 
             if len(cur["proxies"]) == 0:
                 cur["proxies"] = ["DIRECT"]
-        elif "DIRECT" not in cur["proxies"]:
+        elif "DIRECT" not in cur["proxies"] and "REJECT" not in cur["proxies"]:
             cur["proxies"] = proxy_names.copy()
 
         if cur["name"] != "♻️ 自动选择" and "♻️ 自动选择" not in cur["proxies"]:
