@@ -4,27 +4,28 @@ import requests
 import re
 
 URL_DICT = {
-    "141": [100, "http://39.106.12.141:8081/clash/proxies?nc=CN"],
     # "3wking": [100, "http://clash.3wking.com:12580/clash/proxies?nc=CN"],
     # "cloudkingzst": [0, "https://proxy.cloudkingzst.xyz/clash/proxies?nc=CN"],
     # "ednovas.xyz": [0, "https://proxy.ednovas.xyz/clash/proxies?nc=CN"],
     # "freeu": [10, "https://freeu.xyz/clash/proxies?nc=CN"],
     # "free.zdl": [10, "https://free.zdl.im/clash/proxies?nc=CN"],
-    "free886": [0, "https://free886.herokuapp.com/clash/proxies?nc=CN"],
+    # "free886": [0, "https://free886.herokuapp.com/clash/proxies?nc=CN"],
     # "getproxy": [100, "https://getproxy.olivers.works/clash/proxies?nc=CN"],
-    "lonxin": [100, "https://fq.lonxin.net/clash/proxies?nc=CN"],
+    # "lonxin": [100, "https://fq.lonxin.net/clash/proxies?nc=CN"],
     # "luoml": [10, "https://emby.luoml.eu.org/clash/proxies?nc=CN"],
-    "myvm": [10, "https://clash.myvm.cc/clash/proxies?nc=CN"],
+    # "myvm": [10, "https://clash.myvm.cc/clash/proxies?nc=CN"],
     # "proxypoolss.fly": [0, "https://proxypoolss.fly.dev/clash/proxies?nc=CN"],
     "laowang": [0, "https://proxypool.laowang.me/clash/proxies?nc=CN"],
     # "purel": [20, "https://proxy.purel.in/clash/proxies?nc=CN"],
     # "sspool.nl": [0, "https://sspool.nl/clash/proxies?nc=IN,CN"],
     # "stgod": [100, "https://hello.stgod.com/clash/proxies?nc=IN,CN"],
-    "tihg": [10, "https://tihg.fun/clash/proxies?nc=CN"],
+    # "tihg": [10, "https://tihg.fun/clash/proxies?nc=CN"],
     # "xhrzg2017": [0, "https://hk.xhrzg2017.xyz/clash/proxies?nc=CN"],
     # "wxshi": [0, "http://wxshi.top:9090/clash/proxies?nc=CN"],
-    "gtang8": [0, "https://suo.yt/ZxDz8mO"],
+    # "gtang8": [0, "https://suo.yt/ZxDz8mO"],
     "yiun": [10, "https://proxy.yiun.xyz/clash/proxies?nc=CN"],
+    "haisto": [10, "http://proxies.haisto.cn//clash/proxies?nc=CN"],
+    "yugogo": [10, "http://proxy.yugogo.xyz//clash/proxies?nc=CN"],
 }
 
 def parse_proxy_from_html(html):
@@ -138,7 +139,7 @@ if __name__ == "__main__":
     file_dir = os.path.dirname(os.path.abspath(__file__))
 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-u", "--url", type=str, help="One of: " + ss_servers, default="sspool")
+    parser.add_argument("-u", "--url", type=str, help="One of: " + ss_servers, default="yiun")
     parser.add_argument("-t", "--wait_time", type=int, default=20, help="Wait time before expire.")
     parser.add_argument("-o", "--output", type=str, default=os.path.join(file_dir, "SSS.tsv"), help="Output file path.")
     parser.add_argument("-H", "--head", type=int, default=-1, help="Save only the top [NUM] address.")
