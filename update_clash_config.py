@@ -39,11 +39,14 @@ def update_proxies(update_yaml="clash.yaml", save_yaml="config.yaml", basic_yaml
         updates = yaml.safe_load(ff.read())
 
     proxies = [ii for ii in updates["proxies"] if isinstance(ii["port"], int) and "CN" not in ii["name"]]
+    proxies += basic["proxies"]
     proxy_names = [ii["name"] for ii in proxies]
     basic["proxies"] = proxies
 
-    auto_select = {"name": "♻️ 自动选择", "type": "url-test", "url": "http://www.google.com/", "interval": 300, "proxies": []}
-    basic["proxy-groups"].insert(0, auto_select)
+    auto_select = [ii for ii in basic["proxy-groups"] if "自动选择" in ii["name"]]
+    if len(auto_select) == 0:
+        auto_select = {"name": "♻️ 自动选择", "type": "url-test", "url": "http://www.google.com/", "interval": 300, "proxies": []}
+        basic["proxy-groups"].insert(0, auto_select)
 
     for cur in basic["proxy-groups"]:
         if cur["name"] in PROXY_GROUP_TOKENS:
